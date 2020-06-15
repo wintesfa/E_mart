@@ -1,34 +1,49 @@
 package edu.miu.e_mart.domain;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.validation.constraints.Email;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+
 
 @Entity
 public class Admin {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int adminId;
-
+	// @NotEmpty(message = "{validate.notEmpty}")
 	private String firstName;
-	private  String lastName;
+	// @NotEmpty(message = "{validate.notEmpty}")
+	private String lastName;
+	// @Valid
+	@OneToOne
 	private ARole role;
-	private  ACredential credential;
+	// @Valid
+	@OneToOne
+	private ACredential acredential;
+	@OneToOne
 	private Address address;
+	
+	@OneToMany(cascade = CascadeType.ALL)
+	private List<Product>products = new ArrayList<>();
 
 	public Admin() {
 		super();
 	}
 
-	public Admin( String firstName, String lastName, ARole role, ACredential credential, Address address) {
+	public Admin(String firstName, String lastName, ARole role, ACredential acredential, Address address) {
 		super();
 
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.role = role;
-		this.credential = credential;
+		this.acredential = acredential;
 		this.address = address;
 	}
 
@@ -65,11 +80,11 @@ public class Admin {
 	}
 
 	public ACredential getCredential() {
-		return credential;
+		return acredential;
 	}
 
 	public void setCredential(ACredential credential) {
-		this.credential = credential;
+		this.acredential = credential;
 	}
 
 	public Address getAddress() {
@@ -79,7 +94,5 @@ public class Admin {
 	public void setAddress(Address address) {
 		this.address = address;
 	}
-
-
 
 }
